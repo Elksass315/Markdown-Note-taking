@@ -1,0 +1,28 @@
+{
+  "name": "markdown-note-taking",
+  "version": "1.0.0",
+  "description": "Markdown-Note-taking back-End with nodeJS",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest --verbose --coverage",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.3.12",
+    "express": "^4.21.0",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "winston": "^3.14.2",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
