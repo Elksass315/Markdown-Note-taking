@@ -1,6 +1,8 @@
 import express from 'express';
 import errorMiddleware from '../middleware/error.js';
 import grammerCheckingRouter from '../routes/grammar-checking.js';
+import authRouter from '../routes/auth.js';
+import userRouter from '../routes/users.js'; 
 
 export default function (app) {
     app.use(express.json());
@@ -9,4 +11,6 @@ export default function (app) {
     app.use(errorMiddleware)
 
     app.use('/api/grammar', grammerCheckingRouter);
+    app.use('/api/auth', authRouter);
+    app.use('/api/users', userRouter);
 }
