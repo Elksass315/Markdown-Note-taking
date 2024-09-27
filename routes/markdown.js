@@ -77,4 +77,21 @@ router.get("/file/:fileid", auth, async (req, res) => {
     }
 });
 
+router.delete("/file/:fileid", auth, async (req, res) => {
+    let userFile = await userFiles.findOne({ User: req.user._id });
+    if (userFile) {
+        const requestedFile = `uploads\\${req.params.fileid}`;
+        if (userFile.files.includes(requestedFile)) {
+            userFile.files = userFile.files.filter(file => file !== requestedFile);
+            await userFile.save();
+            res.json({ message: "File deleted" });
+        } else {
+            res.status(404).json({ error: "File not found" });
+        }
+    } else {
+        res.status(404).json({ error: "No files found" });
+    }
+});
+
+
 export default router;
