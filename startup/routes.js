@@ -4,6 +4,7 @@ import grammerCheckingRouter from '../routes/grammar-checking.js';
 import authRouter from '../routes/auth.js';
 import userRouter from '../routes/users.js'; 
 import markdownRouter from '../routes/markdown.js';
+import fileRenderingRouter from '../routes/fileRendring.js';
 
 export default function (app) {
     app.use(express.json());
@@ -11,6 +12,7 @@ export default function (app) {
     
     app.use(errorMiddleware)
 
+    app.use('/api/file-rendering', fileRenderingRouter);
     app.use('/api/grammar', grammerCheckingRouter);
     app.use('/api/auth', authRouter);
     app.use('/api/users', userRouter);

@@ -1,4 +1,3 @@
-// const express = require('express');\\
 import express from 'express';
 import User from '../model/users.js';
 import auth from '../middleware/auth.js';

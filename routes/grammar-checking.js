@@ -17,7 +17,6 @@ router.post('/check-grammar', async (req, res) => {
 
     console.log('Checking grammar for:', text);
     try {
-        // Use form data for the request
         const params = new URLSearchParams();
         params.append('text', text);
         params.append('language', language || 'en-US');
@@ -31,7 +30,7 @@ router.post('/check-grammar', async (req, res) => {
         console.log(`Response: ${JSON.stringify(response.data)}`);
         res.status(200).json({
             originalText: text,
-            grammarErrors: response.data.matches, // Errors found by the API
+            grammarErrors: response.data.matches, 
         });
     } catch (error) {
         winston.error(error);
