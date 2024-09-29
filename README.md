@@ -8,6 +8,9 @@
 <li>provide an endpoint to save the note that can be passed in as Markdown text.</li>
 <li>Return the HTML version of the Markdown note (rendered note) through another endpoint.</li>
 <li>auth endpoint.</li>
-
-
 </ls>
+
+<br>
+<br>
+you can see the full API docs at <b>http://localhost:${PORT}/api-docs</b>
+
