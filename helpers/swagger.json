@@ -1,0 +1,263 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Documentation",
+    "description": "API for Markdown Note-Taking, Grammar Checking, User Authentication, and File Rendering"
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "schemes": ["http"],
+  "paths": {
+    "/auth": {
+      "post": {
+        "summary": "Authenticate a user",
+        "description": "Authenticate a user and return a JWT token.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid email or password"
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "summary": "Register a new user",
+        "description": "Registers a new user.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User registered successfully",
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          },
+          "400": {
+            "description": "User already registered or validation error"
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "Get current user details",
+        "description": "Fetch details of the currently logged-in user.",
+        "responses": {
+          "200": {
+            "description": "User details",
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/markdown/upload": {
+      "post": {
+        "summary": "Upload a Markdown file",
+        "description": "Uploads a markdown file for rendering.",
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File uploaded successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file format or no file uploaded"
+          }
+        }
+      }
+    },
+    "/file-rendering/md": {
+      "post": {
+        "summary": "Render Markdown file",
+        "description": "Upload and render a markdown file to HTML.",
+        "parameters": [
+          {
+            "name": "markdown",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rendered HTML",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occurred while processing the file"
+          }
+        }
+      }
+    },
+    "/grammar/check-grammar": {
+      "post": {
+        "summary": "Check grammar of a text",
+        "description": "Checks the grammar of the provided text using the LanguageTool API.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GrammarRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grammar checked",
+            "schema": {
+              "$ref": "#/definitions/GrammarResponse"
+            }
+          },
+          "500": {
+            "description": "Error checking grammar"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AuthRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "user@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password123"
+        }
+      }
+    },
+    "RegisterRequest": {
+      "type": "object",
+      "properties": {
+        "fullName": {
+          "type": "string",
+          "example": "John Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "john@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password123"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "123-456-7890"
+        }
+      }
+    },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        }
+      }
+    },
+    "GrammarRequest": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "example": "This is a example text with mistake."
+        },
+        "language": {
+          "type": "string",
+          "example": "en-US"
+        }
+      }
+    },
+    "GrammarResponse": {
+      "type": "object",
+      "properties": {
+        "originalText": {
+          "type": "string"
+        },
+        "grammarErrors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "offset": {
+                "type": "integer"
+              },
+              "length": {
+                "type": "integer"
+              },
+              "replacements": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
