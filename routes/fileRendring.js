@@ -54,7 +54,7 @@ router.post('/md', upload.single('markdown'), async (req, res) => {
 router.get("/:fileid", auth, async (req, res) => {
     try {
         
-        let userFile = await userFiles.findOne({ User: req.user._id });
+        let userFile = await userFiles.findOne({ User: req.auth._id });
 
         if (!userFile) {
             return res.status(404).json({ error: "No files found" });

@@ -7,6 +7,7 @@ import winston from "winston";
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import validateObjectid from "../middleware/validateObjectId.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,7 +23,7 @@ router.post("/upload", [auth, upload.single("file")], async (req, res) => {
             return;
         }
 
-        let userFile = await userFiles.findOne({ User: req.user._id });
+        let userFile = await userFiles.findOne({ User: req.auth._id });
         if (userFile) {
             if (!userFile.files) {
                 userFile.files = [];
@@ -31,7 +32,7 @@ router.post("/upload", [auth, upload.single("file")], async (req, res) => {
             await userFile.save();
         } else {
             const newUserFile = new userFiles({
-                User: req.user._id,
+                User: req.auth._id,
                 files: [req.file.path]
             });
 
@@ -47,7 +48,7 @@ router.post("/upload", [auth, upload.single("file")], async (req, res) => {
 
 
 router.get("/files-list", auth, async (req, res) => {
-    let userFile = await userFiles.findOne({ User: req.user._id });
+    let userFile = await userFiles.findOne({ User: req.auth._id });
     if (userFile) {
         res.json({ files: userFile.files });
     } else {
@@ -55,8 +56,8 @@ router.get("/files-list", auth, async (req, res) => {
     }
 });
 
-router.get("/file/:fileid", auth, async (req, res) => {
-    let userFile = await userFiles.findOne({ User: req.user._id });
+router.get("/file/:fileid", [auth, validateObjectid], async (req, res) => {
+    let userFile = await userFiles.findOne({ User: req.auth._id });
     if (userFile) {
 
         const requestedFile = `uploads\\${req.params.fileid}`;
@@ -78,7 +79,7 @@ router.get("/file/:fileid", auth, async (req, res) => {
 });
 
 router.delete("/file/:fileid", auth, async (req, res) => {
-    let userFile = await userFiles.findOne({ User: req.user._id });
+    let userFile = await userFiles.findOne({ User: req.auth._id });
     if (userFile) {
         const requestedFile = `uploads\\${req.params.fileid}`;
         if (userFile.files.includes(requestedFile)) {

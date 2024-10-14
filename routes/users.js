@@ -3,12 +3,12 @@ import User from '../model/users.js';
 import auth from '../middleware/auth.js';
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
-import validateObjectId from '../middleware/validateObjectid.js';
+import validateObjectId from '../middleware/validateObjectId.js';
 
 const router = express.Router();
 
 router.get('/me', auth, async (req, res) => {
-    const user = await User.findById(req.user._id).select('-password');
+    const user = await User.findById(req.auth._id).select('-password');
     res.send(user);
 });
 
@@ -34,7 +34,7 @@ router.post('/register', async (req, res) => {
 
 
 router.put('update-password', auth, async (req, res) => {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.auth._id);
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(req.body.password, salt);
@@ -66,7 +66,7 @@ router.put('/:id', validateObjectId, auth, async (req, res) => {
 });
 
 router.delete('/:id', [auth, validateObjectId], async (req, res) => {
-    const user = await User.findByIdAndDelete(req.user._id);
+    const user = await User.findByIdAndDelete(req.auth._id);
     if (!user) return res.status(404).send('User not found.');
 
     res.send(user);
