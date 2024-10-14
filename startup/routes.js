@@ -5,6 +5,7 @@ import authRouter from '../routes/auth.js';
 import userRouter from '../routes/users.js'; 
 import markdownRouter from '../routes/markdown.js';
 import fileRenderingRouter from '../routes/fileRendring.js';
+import toDoRouter from '../routes/toDo.js';
 
 export default function (app) {
     app.use(express.json());
@@ -17,4 +18,5 @@ export default function (app) {
     app.use('/api/auth', authRouter);
     app.use('/api/users', userRouter);
     app.use('/api/markdown', markdownRouter);
+    app.use('/api/todo', toDoRouter);
 }
