@@ -1,0 +1,26 @@
+services:
+  markdownnotetaking:
+    image: markdownnotetaking
+    ports:
+      - "3000:3000"
+    networks:
+      - noteApp
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    ports:
+      - "27018:27017"
+    networks:
+      - noteApp
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  noteApp:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
