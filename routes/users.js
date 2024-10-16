@@ -49,27 +49,5 @@ router.put('update-password', auth, async (req, res) => {
 });
 
 
-router.put('/:id', validateObjectId, auth, async (req, res) => {
-    const user = await User.findById(req.params.id);
-
-    if (req.params.fullname) user.fullName = req.body.fullName;
-    if (req.params.phoneNumber) user.phoneNumber = req.body.phoneNumber;
-
-    try {
-        await user.save();
-        res.send(user);
-    }
-    catch (ex) {
-        res.status(500).send(ex.message);
-    }
-
-});
-
-router.delete('/:id', [auth, validateObjectId], async (req, res) => {
-    const user = await User.findByIdAndDelete(req.auth._id);
-    if (!user) return res.status(404).send('User not found.');
-
-    res.send(user);
-});
 
 export default router;
